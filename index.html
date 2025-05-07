@@ -1043,8 +1043,11 @@
                   // 滑動時暫停自動輪播，3秒後恢復
                   var pauseTimeout;
                   grid.addEventListener('wheel', function(e) {
+                    // 只有在橫向滾動時才阻止冒泡，否則讓事件傳遞（可上下切換區塊）
                     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
                       e.stopPropagation();
+                    } else {
+                      return; // 讓上下滾動事件繼續傳遞
                     }
                     clearInterval(interval);
                     clearTimeout(pauseTimeout);
