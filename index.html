@@ -965,16 +965,12 @@
               // 处理关闭按钮
               closeButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                  // 強制切換到 Works 區塊（只切 active，不滾動）
+                  // 強制切換到 Works 區塊（先切 active 再關閉 modal）
                   const worksSection = document.querySelector('.work-section');
                   if (worksSection) {
-                    // 切換主內容 active
                     document.querySelectorAll('.l-section').forEach(sec => sec.classList.remove('section--is-active'));
-                    const worksLSection = worksSection.closest('.l-section');
-                    worksLSection.classList.add('section--is-active');
-                    // 同步側邊選單 active
-                    const sideNavItems = document.querySelectorAll('.side-nav li');
-                    sideNavItems.forEach((li, idx) => li.classList.toggle('is-active', idx === 2)); // 作品集通常是第三個
+                    worksSection.closest('.l-section').classList.add('section--is-active');
+                    worksSection.scrollIntoView({ behavior: 'smooth' });
                   }
                   // 最後再關閉 modal
                   const modal = this.closest('.modal');
@@ -991,14 +987,12 @@
               modals.forEach(modal => {
                 modal.addEventListener('click', function(e) {
                   if (e.target === this) {
-                    // 強制切換到 Works 區塊（只切 active，不滾動）
+                    // 強制切換到 Works 區塊（先切 active 再關閉 modal）
                     const worksSection = document.querySelector('.work-section');
                     if (worksSection) {
                       document.querySelectorAll('.l-section').forEach(sec => sec.classList.remove('section--is-active'));
-                      const worksLSection = worksSection.closest('.l-section');
-                      worksLSection.classList.add('section--is-active');
-                      const sideNavItems = document.querySelectorAll('.side-nav li');
-                      sideNavItems.forEach((li, idx) => li.classList.toggle('is-active', idx === 2));
+                      worksSection.closest('.l-section').classList.add('section--is-active');
+                      worksSection.scrollIntoView({ behavior: 'smooth' });
                     }
                     setTimeout(() => {
                       this.style.display = 'none';
@@ -1013,14 +1007,12 @@
                 if (e.key === 'Escape') {
                   modals.forEach(modal => {
                     if (modal.style.display === 'block') {
-                      // 強制切換到 Works 區塊（只切 active，不滾動）
+                      // 強制切換到 Works 區塊（先切 active 再關閉 modal）
                       const worksSection = document.querySelector('.work-section');
                       if (worksSection) {
                         document.querySelectorAll('.l-section').forEach(sec => sec.classList.remove('section--is-active'));
-                        const worksLSection = worksSection.closest('.l-section');
-                        worksLSection.classList.add('section--is-active');
-                        const sideNavItems = document.querySelectorAll('.side-nav li');
-                        sideNavItems.forEach((li, idx) => li.classList.toggle('is-active', idx === 2));
+                        worksSection.closest('.l-section').classList.add('section--is-active');
+                        worksSection.scrollIntoView({ behavior: 'smooth' });
                       }
                       setTimeout(() => {
                         modal.style.display = 'none';
@@ -1529,128 +1521,13 @@
 <script src="assets/js/portfolio-filter.js"></script>
 
 <!-- Project Modals -->
-<div id="project1" class="modal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <div class="modal-header">
-      <h2>
-        <span data-lang-zh>企業網站重新設計</span>
-        <span data-lang-en>Corporate Website Redesign</span>
-      </h2>
-                </div>
-    <div class="modal-body">
-      <div class="project-images">
-        <img src="assets/img/projects/web-project1-detail.jpg" alt="Project Detail">
-      </div>
-      <div class="project-info">
-        <h3>
-          <span data-lang-zh>專案概述</span>
-          <span data-lang-en>Project Overview</span>
-        </h3>
-        <p>
-          <span data-lang-zh>全面重新設計企業網站，專注於現代設計原則和響應式布局。</span>
-          <span data-lang-en>A complete redesign of a corporate website focusing on modern design principles and responsive layouts.</span>
-        </p>
-        
-        <h3>
-          <span data-lang-zh>挑戰</span>
-          <span data-lang-en>Challenge</span>
-        </h3>
-        <p>
-          <span data-lang-zh>主要挑戰在於在保持公司專業形象的同時實現網站現代化並改善用戶體驗。</span>
-          <span data-lang-en>The main challenge was to modernize the existing website while maintaining the company's professional image and improving user experience.</span>
-        </p>
-        
-        <h3>
-          <span data-lang-zh>解決方案</span>
-          <span data-lang-en>Solution</span>
-        </h3>
-        <p>
-          <span data-lang-zh>實現了清晰現代的設計，改進了導航和移動端響應性。添加互動元素並優化了內容展示。</span>
-          <span data-lang-en>Implemented a clean, modern design with improved navigation and mobile responsiveness. Added interactive elements and optimized content presentation.</span>
-        </p>
-        
-        <h3>
-          <span data-lang-zh>使用技術</span>
-          <span data-lang-en>Technologies Used</span>
-        </h3>
-        <div class="modal-tools">
-          <span>HTML5</span>
-          <span>CSS3</span>
-          <span>JavaScript</span>
-          <span>Responsive Design</span>
-          <span>Bootstrap</span>
-        </div>
-      </div>
-    </div>
-  </div>
-                </div>
-              
-<div id="project2" class="modal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <div class="modal-header">
-      <h2>E-commerce Platform</h2>
-    </div>
-    <div class="modal-body">
-      <div class="project-images">
-        <img src="assets/img/projects/web-project2-detail.jpg" alt="Project Detail">
-      </div>
-      <div class="project-info">
-        <h3>Project Overview</h3>
-        <p>Development of a full-featured e-commerce platform with modern shopping experience.</p>
-        
-        <h3>Challenge</h3>
-        <p>Creating a seamless shopping experience while handling complex product management and payment systems.</p>
-        
-        <h3>Solution</h3>
-        <p>Built a robust platform using React and Node.js, implementing secure payment processing and efficient product management system.</p>
-        
-        <h3>Technologies Used</h3>
-        <div class="modal-tools">
-          <span>React</span>
-          <span>Node.js</span>
-          <span>MongoDB</span>
-          <span>Express</span>
-          <span>Payment API</span>
-                        </div>
-                      </div>
-                      </div>
-                      </div>
-                        </div>
 
-<div id="project3" class="modal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <div class="modal-header">
-      <h2>Banking App Design</h2>
-                      </div>
-    <div class="modal-body">
-      <div class="project-images">
-        <img src="assets/img/projects/uiux-project1-detail.jpg" alt="Project Detail">
-                        </div>
-      <div class="project-info">
-        <h3>Project Overview</h3>
-        <p>A user-centered mobile banking application designed for modern banking needs.</p>
-        
-        <h3>Challenge</h3>
-        <p>Creating an intuitive and secure banking experience while maintaining simplicity in complex financial operations.</p>
-        
-        <h3>Solution</h3>
-        <p>Developed a clean, user-friendly interface with focus on security and ease of use. Implemented biometric authentication and quick access to common features.</p>
-        
-        <h3>Tools Used</h3>
-        <div class="modal-tools">
-          <span>Figma</span>
-          <span>Protopie</span>
-          <span>User Research</span>
-          <span>Wireframing</span>
-          <span>User Testing</span>
-                      </div>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
+   
+              
+
+
+
+          
 
 <!-- Plantae Modal -->
 <div id="plantae-modal" class="modal">
@@ -2382,78 +2259,7 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </div>
 
-<!-- FinTech Animation Modal -->
-<div id="fintech-animation-modal" class="modal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <div class="modal-header">
-      <h2>
-        <span data-lang-zh>金融科技動畫設計</span>
-        <span data-lang-en>FinTech Animation Design</span>
-      </h2>
-    </div>
-    <div class="modal-body">
-      <div class="project-images">
-        <img src="assets/img/projects/animation-project1.jpg" alt="金融科技動畫設計">
-      </div>
-      <div class="project-info">
-        <h3>
-          <span data-lang-zh>專案概述</span>
-          <span data-lang-en>Project Overview</span>
-        </h3>
-        <p>
-          <span data-lang-zh>為銀行的金融科技服務開發一系列動態圖像和動畫，包括產品介紹、使用教學和行銷素材，以生動有趣的方式向客戶展示複雜的金融概念和服務流程。</span>
-          <span data-lang-en>Developed a series of motion graphics and animations for the bank's FinTech services, including product introductions, tutorials, and marketing materials, presenting complex financial concepts and service processes to customers in an engaging way.</span>
-        </p>
 
-        <h3>
-          <span data-lang-zh>主要工作內容</span>
-          <span data-lang-en>Key Responsibilities</span>
-        </h3>
-        <p>
-          <span data-lang-zh>• 設計並製作產品功能介紹動畫
-• 開發互動式教學動畫
-• 製作社群媒體動態圖像
-• 設計行銷活動動畫
-• 製作使用者介面動效</span>
-          <span data-lang-en>• Design and create product feature animations
-• Develop interactive tutorial animations
-• Create social media motion graphics
-• Design marketing campaign animations
-• Create UI motion effects</span>
-        </p>
-
-        <h3>
-          <span data-lang-zh>技術重點</span>
-          <span data-lang-en>Technical Focus</span>
-        </h3>
-        <p>
-          <span data-lang-zh>• 使用 After Effects 製作複雜動態效果
-• 運用 Animate 製作互動式動畫
-• 結合 Illustrator 設計向量圖形
-• 製作響應式動畫，適配不同裝置
-• 優化動畫檔案大小和效能</span>
-          <span data-lang-en>• Complex motion effects with After Effects
-• Interactive animations with Animate
-• Vector graphics design with Illustrator
-• Responsive animations for different devices
-• Animation file size and performance optimization</span>
-        </p>
-
-        <h3>
-          <span data-lang-zh>使用工具</span>
-          <span data-lang-en>Tools Used</span>
-        </h3>
-        <div class="modal-tools">
-          <span>After Effects</span>
-          <span>Animate</span>
-          <span>Illustrator</span>
-          <span>Photoshop</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Product Management Modal -->
 <div id="product-management-modal" class="modal">
