@@ -1027,8 +1027,8 @@
               console.log('View buttons found:', viewButtons.length);
               console.log('Modals found:', modals.length);
 
-              // 自動橫向輪播
-              (function() {
+              // 將自動橫向輪播初始化移到 window.onload
+              window.addEventListener('load', function() {
                 var grid = document.querySelector('.work-section .work-grid');
                 console.log('work-grid:', grid);
                 if (grid) {
@@ -1076,7 +1076,7 @@
                     }
                   }, { passive: false });
                 }
-              })();
+              });
             });
             </script>
           </li>
