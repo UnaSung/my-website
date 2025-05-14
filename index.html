@@ -1519,13 +1519,15 @@
 </div>
 <script>
   (function() {
+      let scrollTested = false;
+  
       function createWarning() {
           if (document.getElementById('monica-warning')) return;
           const warning = document.createElement('div');
           warning.id = 'monica-warning';
           warning.innerHTML = `
-              🚨 檢測到可能是 ChatGPT 助手 Monica 擴充影響滑動<br>
-              請嘗試停用 Monica，或將本站加入 Monica 忽略清單。<br>
+              🚨 檢測到您的瀏覽器可能有插件阻擋本站正常滑動 (如 ChatGPT Monica)<br>
+              建議停用或在 Monica 中將本站加入忽略清單。<br>
               <button id="monica-close">關閉</button>
           `;
           Object.assign(warning.style, {
@@ -1546,47 +1548,50 @@
           document.getElementById('monica-close').onclick = () => warning.remove();
       }
   
-      function detectMonica() {
-          // 方法 1：已知 Monica 注入的物件
-          if (window.Monaco || window.monicaPluginInjected) {
-              createWarning();
-              return;
-          }
-  
-          // 方法 2：Monica 已知 DOM ID
-          if (document.getElementById('monica-container')) {
-              createWarning();
-              return;
-          }
-  
-          // 方法 3：高 z-index + fixed + 無 class
-          const suspicious = [...document.querySelectorAll('div, iframe')].find(el => {
-              const style = window.getComputedStyle(el);
-              return style.position === 'fixed' && parseInt(style.zIndex) > 9999 && !el.classList.length;
+      // 方法：檢測滾動是否被阻擋
+      function testScrollBlock() {
+          if (scrollTested) return;
+          scrollTested = true;
+          const testDiv = document.createElement('div');
+          Object.assign(testDiv.style, {
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              width: '100px',
+              height: '100px',
+              overflow: 'scroll',
+              zIndex: '-1',
+              opacity: '0'
           });
-          if (suspicious) {
-              createWarning();
-              return;
-          }
+          document.body.appendChild(testDiv);
+          const startScrollTop = testDiv.scrollTop;
+          testDiv.scrollTop = 50;
   
-          // 方法 4：Shadow DOM 檢測
-          [...document.querySelectorAll('div')].forEach(el => {
-              if (el.shadowRoot) {
+          // 測試是否能被改變
+          setTimeout(() => {
+              if (testDiv.scrollTop !== 50) {
+                  console.log('滾動異常，疑似插件阻擋');
                   createWarning();
               }
-          });
+              testDiv.remove();
+          }, 100);
       }
   
-      // 初始延遲偵測（Monica 是延遲注入）
-      setTimeout(detectMonica, 3000);
+      window.addEventListener('load', () => {
+          // 等待 Monica 注入後，再進行檢測
+          setTimeout(testScrollBlock, 3000);
+      });
   
-      // 監控 DOM 變化
+      // 監控 DOM 變動，避免 SPA 忽略
       const observer = new MutationObserver(() => {
-          detectMonica();
+          if (!scrollTested) {
+              testScrollBlock();
+          }
       });
       observer.observe(document.body, { childList: true, subtree: true });
   })();
   </script>
+  
   
   
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
