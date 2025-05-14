@@ -3203,3 +3203,9 @@ img {
     left: auto !important;
   }
 }
+
+/* 全局滾動設置 */
+* {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
