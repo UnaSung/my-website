@@ -1517,7 +1517,59 @@
     <li>Hire Us</li>
   </ul>
 </div>
-
+<script>
+  (function() {
+      function createWarning() {
+          if (document.getElementById('monica-warning')) return;
+          const warning = document.createElement('div');
+          warning.id = 'monica-warning';
+          warning.innerHTML = `
+              🚨 檢測到 ChatGPT 助手 Monica 擴充可能影響本站滑動<br>
+              請嘗試停用 Monica，或將本站加入 Monica 忽略清單。
+              <br><button id="monica-close">關閉</button>
+          `;
+          Object.assign(warning.style, {
+              position: 'fixed',
+              right: '20px',
+              bottom: '20px',
+              background: 'rgba(0,0,0,0.85)',
+              color: '#fff',
+              padding: '15px',
+              borderRadius: '8px',
+              fontSize: '14px',
+              zIndex: 999999,
+              maxWidth: '300px',
+              lineHeight: '1.5',
+              boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+          });
+          document.body.appendChild(warning);
+          document.getElementById('monica-close').onclick = () => warning.remove();
+      }
+  
+      function detectMonica() {
+          // 方法 1：偵測 DOM 結構
+          const monicaDiv = [...document.querySelectorAll('div')]
+              .find(el => el.shadowRoot || (el.style.position === 'fixed' && parseInt(el.style.zIndex) > 9999 && !el.classList.length));
+          // 方法 2：偵測 window 注入物件
+          const monicaWindow = !!window.Monaco || !!window.monicaPluginInjected;
+  
+          if (monicaDiv || monicaWindow) {
+              console.log('疑似 Monica 擴充檢測到');
+              createWarning();
+          }
+      }
+  
+      // 初步檢測
+      setTimeout(detectMonica, 3000);
+  
+      // 監聽 DOM 變化（防動態載入）
+      const observer = new MutationObserver(() => {
+          detectMonica();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+  })();
+  </script>
+  
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.7.1.min.js"><\/script>')</script>
 <script src="assets/js/functions-min.js"></script>
