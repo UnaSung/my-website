@@ -1519,16 +1519,17 @@
 </div>
 <script>
   (function() {
-      let scrollTested = false;
-  
-      function createWarning() {
+      function createAlwaysShowWarning() {
           if (document.getElementById('monica-warning')) return;
           const warning = document.createElement('div');
           warning.id = 'monica-warning';
           warning.innerHTML = `
-              🚨 檢測到您的瀏覽器可能有插件阻擋本站正常滑動 (如 ChatGPT Monica)<br>
-              建議停用或在 Monica 中將本站加入忽略清單。<br>
-              <button id="monica-close">關閉</button>
+              🚨 溫馨提醒：若發現本站無法正常滑動<br>
+              可能是因瀏覽器安裝的 ChatGPT 助手 (如 Monica) 影響<br>
+              請嘗試：<br>
+              1️⃣ 將本站加入 Monica 忽略清單<br>
+              2️⃣ 或暫時停用 ChatGPT 助手類擴充<br>
+              <button id="monica-close" style="margin-top:10px;padding:5px 10px;">我知道了</button>
           `;
           Object.assign(warning.style, {
               position: 'fixed',
@@ -1548,49 +1549,12 @@
           document.getElementById('monica-close').onclick = () => warning.remove();
       }
   
-      // 方法：檢測滾動是否被阻擋
-      function testScrollBlock() {
-          if (scrollTested) return;
-          scrollTested = true;
-          const testDiv = document.createElement('div');
-          Object.assign(testDiv.style, {
-              position: 'absolute',
-              top: '0',
-              left: '0',
-              width: '100px',
-              height: '100px',
-              overflow: 'scroll',
-              zIndex: '-1',
-              opacity: '0'
-          });
-          document.body.appendChild(testDiv);
-          const startScrollTop = testDiv.scrollTop;
-          testDiv.scrollTop = 50;
-  
-          // 測試是否能被改變
-          setTimeout(() => {
-              if (testDiv.scrollTop !== 50) {
-                  console.log('滾動異常，疑似插件阻擋');
-                  createWarning();
-              }
-              testDiv.remove();
-          }, 100);
-      }
-  
       window.addEventListener('load', () => {
-          // 等待 Monica 注入後，再進行檢測
-          setTimeout(testScrollBlock, 3000);
+          setTimeout(createAlwaysShowWarning, 1000);
       });
-  
-      // 監控 DOM 變動，避免 SPA 忽略
-      const observer = new MutationObserver(() => {
-          if (!scrollTested) {
-              testScrollBlock();
-          }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
   })();
   </script>
+  
   
   
   
