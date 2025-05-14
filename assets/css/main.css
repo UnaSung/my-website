@@ -3210,3 +3210,21 @@ img {
     min-height: 100vh; /* 最低高度滿版 */
     overflow-x: hidden;
 }
+
+/* 防止擴充 injected fixed 元素遮蔽內容 */
+body > div[style*="z-index"]:not([class]) {
+    pointer-events: none !important;
+}
+
+body {
+    will-change: transform;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.wrap {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
