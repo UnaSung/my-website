@@ -28,3 +28,10 @@ const observer = new MutationObserver(mutations => {
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
+
+// 解除所有 document 上的阻擋滑動監聽
+['wheel', 'touchmove'].forEach(event => {
+    window.addEventListener(event, function (e) {
+        e.stopImmediatePropagation();
+    }, { capture: true, passive: false });
+});
