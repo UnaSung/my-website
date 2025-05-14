@@ -3204,8 +3204,9 @@ img {
   }
 }
 
-/* 全局滾動設置 */
-* {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+.wrap {
+    position: relative; /* 改成 relative 或乾脆不要 position */
+    width: 100%;
+    min-height: 100vh; /* 最低高度滿版 */
+    overflow-x: hidden;
 }
