@@ -138,3 +138,8 @@ document.getElementById('').onclick = function() {
     section.className = 'wow lightSpeedIn';
     this.parentNode.insertBefore(section, this);
 };
+
+
+if (navigator.userAgent.includes("Chrome") && window.Monaco === undefined) {
+    console.log('⚠️ 注意：如遇滑動異常，請檢查瀏覽器是否安裝 Monica 擴充，或加入白名單');
+}
