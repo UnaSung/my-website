@@ -1524,9 +1524,9 @@
           const warning = document.createElement('div');
           warning.id = 'monica-warning';
           warning.innerHTML = `
-              🚨 檢測到 ChatGPT 助手 Monica 擴充可能影響本站滑動<br>
-              請嘗試停用 Monica，或將本站加入 Monica 忽略清單。
-              <br><button id="monica-close">關閉</button>
+              🚨 檢測到可能是 ChatGPT 助手 Monica 擴充影響滑動<br>
+              請嘗試停用 Monica，或將本站加入 Monica 忽略清單。<br>
+              <button id="monica-close">關閉</button>
           `;
           Object.assign(warning.style, {
               position: 'fixed',
@@ -1547,28 +1547,47 @@
       }
   
       function detectMonica() {
-          // 方法 1：偵測 DOM 結構
-          const monicaDiv = [...document.querySelectorAll('div')]
-              .find(el => el.shadowRoot || (el.style.position === 'fixed' && parseInt(el.style.zIndex) > 9999 && !el.classList.length));
-          // 方法 2：偵測 window 注入物件
-          const monicaWindow = !!window.Monaco || !!window.monicaPluginInjected;
-  
-          if (monicaDiv || monicaWindow) {
-              console.log('疑似 Monica 擴充檢測到');
+          // 方法 1：已知 Monica 注入的物件
+          if (window.Monaco || window.monicaPluginInjected) {
               createWarning();
+              return;
           }
+  
+          // 方法 2：Monica 已知 DOM ID
+          if (document.getElementById('monica-container')) {
+              createWarning();
+              return;
+          }
+  
+          // 方法 3：高 z-index + fixed + 無 class
+          const suspicious = [...document.querySelectorAll('div, iframe')].find(el => {
+              const style = window.getComputedStyle(el);
+              return style.position === 'fixed' && parseInt(style.zIndex) > 9999 && !el.classList.length;
+          });
+          if (suspicious) {
+              createWarning();
+              return;
+          }
+  
+          // 方法 4：Shadow DOM 檢測
+          [...document.querySelectorAll('div')].forEach(el => {
+              if (el.shadowRoot) {
+                  createWarning();
+              }
+          });
       }
   
-      // 初步檢測
+      // 初始延遲偵測（Monica 是延遲注入）
       setTimeout(detectMonica, 3000);
   
-      // 監聽 DOM 變化（防動態載入）
+      // 監控 DOM 變化
       const observer = new MutationObserver(() => {
           detectMonica();
       });
       observer.observe(document.body, { childList: true, subtree: true });
   })();
   </script>
+  
   
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.7.1.min.js"><\/script>')</script>
