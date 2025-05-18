@@ -1520,6 +1520,10 @@
 <script>
   (function() {
       function createWarningBox() {
+          // 移除阻擋滑動與點擊的干擾（保險）
+          document.body.style.overflow = 'auto';
+          document.body.style.pointerEvents = 'auto';
+  
           if (document.getElementById('monica-warning')) return;
   
           const box = document.createElement('div');
@@ -1535,13 +1539,13 @@
               padding: '15px',
               borderRadius: '8px',
               fontSize: '14px',
-              zIndex: 999999,
+              zIndex: 999999999, // 更高的層級
               maxWidth: '300px',
               lineHeight: '1.5',
               boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+              pointerEvents: 'auto' // 🔥 最重要！
           });
   
-          // 內容
           const content = document.createElement('div');
           content.innerHTML = `
               🚨 溫馨提醒：若發現本站無法正常滑動<br>
@@ -1551,7 +1555,6 @@
               2️⃣ 或暫時停用 ChatGPT 類擴充功能
           `;
   
-          // 關閉按鈕
           const button = document.createElement('button');
           button.innerText = '我知道了';
           Object.assign(button.style, {
@@ -1565,14 +1568,30 @@
           });
           button.onclick = () => box.remove();
   
-          // 加入 DOM
           box.appendChild(content);
           box.appendChild(button);
           document.body.appendChild(box);
       }
   
+      // 定期檢查並修復可能的干擾
+      function checkAndFixInterference() {
+          // 確保 body 可以滾動
+          document.body.style.overflow = 'auto';
+          document.body.style.pointerEvents = 'auto';
+          
+          // 移除可能的固定定位元素
+          const fixedElements = document.querySelectorAll('*[style*="position: fixed"]');
+          fixedElements.forEach(el => {
+              if (el.id !== 'monica-warning') {
+                  el.style.pointerEvents = 'none';
+              }
+          });
+      }
+  
       window.addEventListener('load', () => {
-          setTimeout(createWarningBox, 800); // 等畫面穩定後顯示
+          setTimeout(createWarningBox, 800);
+          // 每 2 秒檢查一次
+          setInterval(checkAndFixInterference, 2000);
       });
   })();
   </script>
