@@ -343,6 +343,119 @@
   overflow-y: visible !important;
 }
 }
+
+/* ======= CLEAR & DRAMATIC MOBILE LAYOUT ======= */
+@media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+    font-size: 16px;
+    background: #000;
+    scroll-behavior: smooth;
+  }
+
+  .l-section {
+    display: block !important;
+    width: 100%;
+    padding: 80px 20px !important;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  .about, .skills-section, .work-section, .hire {
+    width: 100% !important;
+    padding: 40px 20px !important;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-title, .skills-section h2, .hire h2, .work-header h2 {
+    font-size: 1.8rem !important;
+    margin-bottom: 24px;
+    color: #ffd803;
+  }
+
+  .about-paragraph {
+    font-size: 1rem !important;
+    line-height: 1.6;
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 0 !important;
+    border-left: none !important;
+  }
+
+  .tools-grid, .work-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 0 !important;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  .tool-item, .work-item {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 12px;
+    background: #111;
+    padding: 24px 16px !important;
+    text-align: center;
+  }
+
+  .tool-item h3, .work-item-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .tool-main, .tool-sub, .work-item-content p {
+    font-size: 0.95rem;
+    color: #ccc;
+  }
+
+  .work-item-image {
+    width: 100%;
+    height: auto !important;
+    margin-bottom: 16px;
+  }
+
+  .work-item-image img {
+    width: 100%;
+    height: auto !important;
+    border-radius: 8px;
+  }
+
+  .view-project-btn {
+    width: 100%;
+    margin-top: 12px;
+    font-size: 1rem;
+    padding: 10px 0;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .email-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+    justify-content: center;
+  }
+
+  .outer-nav, .header--nav-toggle {
+    display: none !important;
+  }
+
+  .language-switcher {
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 999;
+  }
+}
 </style>
 
 <!-- notification for small viewports and landscape oriented smartphones -->
