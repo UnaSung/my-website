@@ -133,14 +133,15 @@
     }
   }
   .about {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   min-height: 100vh;
   padding: 50px 20px;
   background: #000;
-  overflow-y: auto;
+  overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .about--banner {
@@ -148,6 +149,10 @@
   width: 100%;
   margin: 0 auto;
   padding: 0 20px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .about-title {
@@ -165,10 +170,10 @@
 }
 
 .about-content {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.8s ease;
-  transition-delay: 0.3s;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 10px;
 }
 
 .about.active .about-content {
@@ -224,11 +229,14 @@
 @media (max-width: 768px) {
   .about {
     padding: 30px 15px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
+  
   .about--banner {
     padding: 0 15px;
+  }
+  
+  .about-content {
+    padding-right: 5px;
   }
   .about-title {
     font-size: 2em;
@@ -433,15 +441,17 @@
               document.addEventListener('DOMContentLoaded', function() {
                 const sections = document.querySelectorAll('.section');
                 const aboutSection = document.querySelector('.about');
+                const aboutContent = document.querySelector('.about-content');
                 
                 function enableAboutScroll() {
                   const currentSection = document.querySelector('.section--is-active');
                   if (currentSection && currentSection.querySelector('.about')) {
                     aboutSection.style.overflowY = 'auto';
-                    aboutSection.style.height = '100%';
+                    aboutContent.style.overflowY = 'auto';
                     document.body.style.overflow = 'hidden';
                   } else {
                     aboutSection.style.overflowY = 'hidden';
+                    aboutContent.style.overflowY = 'hidden';
                     document.body.style.overflow = 'auto';
                   }
                 }
@@ -480,14 +490,14 @@
                 });
 
                 // 確保滾動事件正確傳遞
-                aboutSection.addEventListener('wheel', function(e) {
+                aboutContent.addEventListener('wheel', function(e) {
                   if (this.scrollHeight > this.clientHeight) {
                     e.stopPropagation();
                   }
                 }, { passive: false });
 
                 // 觸控設備支援
-                aboutSection.addEventListener('touchmove', function(e) {
+                aboutContent.addEventListener('touchmove', function(e) {
                   if (this.scrollHeight > this.clientHeight) {
                     e.stopPropagation();
                   }
