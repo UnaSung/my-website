@@ -1534,50 +1534,104 @@
               position: 'fixed',
               right: '20px',
               bottom: '20px',
-              background: 'rgba(0,0,0,0.85)',
+              background: 'rgba(0,0,0,0.95)',
               color: '#fff',
-              padding: '15px',
-              borderRadius: '8px',
+              padding: '20px',
+              borderRadius: '12px',
               fontSize: '14px',
               zIndex: 999999999,
-              maxWidth: '300px',
-              lineHeight: '1.5',
-              boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-              pointerEvents: 'auto'
+              maxWidth: '320px',
+              lineHeight: '1.6',
+              boxShadow: '0 4px 20px rgba(255, 216, 3, 0.2)',
+              pointerEvents: 'auto',
+              border: '1px solid rgba(255, 216, 3, 0.3)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)'
           });
   
           const content = document.createElement('div');
           content.innerHTML = `
-              🚨 溫馨提醒：若發現本站無法正常滑動<br>
-              可能是因瀏覽器安裝的 ChatGPT 助手（如 Monica）影響<br>
-              請嘗試：<br>
-              1️⃣ 將本站加入 Monica 忽略清單<br>
-              2️⃣ 或暫時停用 ChatGPT 類擴充功能
+              <div style="
+                  color: #ffd803;
+                  font-size: 16px;
+                  font-weight: 500;
+                  margin-bottom: 12px;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+              ">
+                  <span style="font-size: 20px;">🚨</span>
+                  <span>溫馨提醒</span>
+              </div>
+              <div style="margin-bottom: 12px;">
+                  若發現本站無法正常滑動<br>
+                  可能是因瀏覽器安裝的 ChatGPT 助手（如 Monica）影響<br>
+                  請嘗試：
+              </div>
+              <div style="
+                  background: rgba(255, 216, 3, 0.1);
+                  padding: 12px;
+                  border-radius: 8px;
+                  margin-bottom: 16px;
+              ">
+                  1️⃣ 將本站加入 Monica 忽略清單<br>
+                  2️⃣ 或暫時停用 ChatGPT 類擴充功能
+              </div>
           `;
   
           const button = document.createElement('button');
           button.innerText = '我知道了';
           Object.assign(button.style, {
-              marginTop: '10px',
-              padding: '5px 10px',
-              background: '#fff',
+              width: '100%',
+              padding: '10px 20px',
+              background: '#ffd803',
               color: '#000',
               border: 'none',
-              borderRadius: '4px',
+              borderRadius: '8px',
               cursor: 'pointer',
-              pointerEvents: 'auto' // 確保按鈕可以點擊
+              pointerEvents: 'auto',
+              fontSize: '14px',
+              fontWeight: '500',
+              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
           });
 
+          // 添加懸停效果
+          button.onmouseover = () => {
+              button.style.background = '#ffe033';
+              button.style.transform = 'translateY(-2px)';
+              button.style.boxShadow = '0 4px 12px rgba(255, 216, 3, 0.3)';
+          };
+          button.onmouseout = () => {
+              button.style.background = '#ffd803';
+              button.style.transform = 'translateY(0)';
+              button.style.boxShadow = 'none';
+          };
+  
           // 修改關閉按鈕的事件處理
           button.addEventListener('click', function(e) {
-              e.stopPropagation(); // 阻止事件冒泡
-              box.remove();
+              e.stopPropagation();
+              box.style.opacity = '0';
+              box.style.transform = 'translateY(20px)';
+              setTimeout(() => box.remove(), 300);
           });
   
           box.appendChild(content);
           box.appendChild(button);
           document.body.appendChild(box);
 
+          // 添加動畫效果
+          box.style.opacity = '0';
+          box.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+              box.style.transition = 'all 0.3s ease';
+              box.style.opacity = '1';
+              box.style.transform = 'translateY(0)';
+          }, 100);
+  
           // 確保警告框可以被點擊
           box.addEventListener('click', function(e) {
               e.stopPropagation();
