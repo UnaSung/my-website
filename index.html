@@ -174,11 +174,15 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-right: 10px;
+
+  overflow-y: visible !important;
 }
 
 .about.active .about-content {
   opacity: 1;
   transform: translateY(0);
+
+  overflow-y: visible !important;
 }
 
 .about-paragraph {
@@ -237,7 +241,9 @@
   
   .about-content {
     padding-right: 5px;
-  }
+  
+  overflow-y: visible !important;
+}
   .about-title {
     font-size: 2em;
     margin-bottom: 30px;
@@ -324,10 +330,11 @@
 @media (max-width: 768px) {
   .about-content {
     max-height: 100vh;
-    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
-  }
+  
+  overflow-y: visible !important;
+}
   .skills-section {
     max-height: 100vh;
     overflow-y: auto !important;
