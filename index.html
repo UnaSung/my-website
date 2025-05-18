@@ -1519,12 +1519,44 @@
 </div>
 <script>
   (function() {
+      let scrollCheckInterval;
+      let lastScrollTop = 0;
+      let scrollAttempts = 0;
+      const MAX_SCROLL_ATTEMPTS = 3; // 連續3次無法滾動才顯示警告
+
+      // 檢測滾動是否正常
+      function checkScrollFunctionality() {
+          const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollDelta = Math.abs(currentScrollTop - lastScrollTop);
+          
+          // 如果滾動位置沒有變化，可能是被阻擋
+          if (scrollDelta < 5 && currentScrollTop > 0) {
+              scrollAttempts++;
+              
+              // 嘗試強制修復
+              document.body.style.overflow = 'auto';
+              document.body.style.pointerEvents = 'auto';
+              
+              // 如果多次嘗試後仍然無法滾動，顯示警告
+              if (scrollAttempts >= MAX_SCROLL_ATTEMPTS) {
+                  createWarningBox();
+                  clearInterval(scrollCheckInterval);
+              }
+          } else {
+              // 如果滾動正常，重置計數器
+              scrollAttempts = 0;
+          }
+          
+          lastScrollTop = currentScrollTop;
+      }
+
       function createWarningBox() {
+          // 如果已經存在警告框，不重複創建
+          if (document.getElementById('monica-warning')) return;
+  
           // 移除阻擋滑動與點擊的干擾（保險）
           document.body.style.overflow = 'auto';
           document.body.style.pointerEvents = 'auto';
-  
-          if (document.getElementById('monica-warning')) return;
   
           const box = document.createElement('div');
           box.id = 'monica-warning';
@@ -1564,7 +1596,7 @@
                   <span>溫馨提醒</span>
               </div>
               <div style="margin-bottom: 12px;">
-                  若發現本站無法正常滑動<br>
+                  檢測到頁面無法正常滑動<br>
                   可能是因瀏覽器安裝的 ChatGPT 助手（如 Monica）影響<br>
                   請嘗試：
               </div>
@@ -1616,7 +1648,11 @@
               e.stopPropagation();
               box.style.opacity = '0';
               box.style.transform = 'translateY(20px)';
-              setTimeout(() => box.remove(), 300);
+              setTimeout(() => {
+                  box.remove();
+                  // 重新啟動滾動檢測
+                  startScrollCheck();
+              }, 300);
           });
   
           box.appendChild(content);
@@ -1636,6 +1672,21 @@
           box.addEventListener('click', function(e) {
               e.stopPropagation();
           });
+      }
+
+      // 啟動滾動檢測
+      function startScrollCheck() {
+          // 重置計數器
+          scrollAttempts = 0;
+          lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          
+          // 清除現有的檢測間隔
+          if (scrollCheckInterval) {
+              clearInterval(scrollCheckInterval);
+          }
+          
+          // 每500ms檢查一次滾動狀態
+          scrollCheckInterval = setInterval(checkScrollFunctionality, 500);
       }
   
       // 定期檢查並修復可能的干擾
@@ -1664,8 +1715,10 @@
       }
   
       window.addEventListener('load', () => {
-          setTimeout(createWarningBox, 800);
-          // 每 2 秒檢查一次
+          // 啟動滾動檢測
+          startScrollCheck();
+          
+          // 每 2 秒檢查一次干擾
           setInterval(checkAndFixInterference, 2000);
       });
   })();
