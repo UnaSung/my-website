@@ -309,6 +309,94 @@
     margin-top: 60px !important;
   }
 }
+
+/* 添加防止干擾的基礎樣式 */
+html, body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 確保主要內容區域可以正常滾動 */
+.l-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* 防止固定元素干擾 */
+.fixed-element {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+/* 確保滾動容器正常工作 */
+.scroll-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 防止外部元素干擾 */
+.prevent-interference {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* 確保按鈕和互動元素可點擊 */
+.interactive-element {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* 處理 fixed 元素的干擾 */
+*[style*="position: fixed"]:not(.fixed-element) {
+  pointer-events: none !important;
+  opacity: 0.5 !important;
+  z-index: -1 !important;
+}
+
+/* 確保我們的固定元素正常工作 */
+.fixed-element {
+  position: fixed !important;
+  pointer-events: auto !important;
+  z-index: 1000 !important;
+}
+
+/* 確保主要內容區域可以正常滾動和點擊 */
+.l-viewport {
+  position: relative !important;
+  overflow: auto !important;
+  pointer-events: auto !important;
+  z-index: 1 !important;
+}
+
+/* 確保按鈕和互動元素可以點擊 */
+button, a, [role="button"] {
+  position: relative !important;
+  z-index: 2 !important;
+  pointer-events: auto !important;
+}
+
+/* 防止外部元素遮擋 */
+.prevent-overlay {
+  position: relative !important;
+  z-index: 1 !important;
+  pointer-events: auto !important;
+}
   </style>
 
 <!-- notification for small viewports and landscape oriented smartphones -->
@@ -2389,5 +2477,137 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 </div>
+
+<script>
+// 防止干擾的核心功能
+(function() {
+  // 初始化時設置基礎防護
+  function initializeProtection() {
+    // 確保 body 可以滾動
+    document.body.style.overflow = 'auto';
+    document.body.style.pointerEvents = 'auto';
+    
+    // 設置主要滾動容器
+    const viewport = document.querySelector('.l-viewport');
+    if (viewport) {
+      viewport.style.overflow = 'auto';
+      viewport.style.pointerEvents = 'auto';
+    }
+  }
+
+  // 定期清理可能的干擾
+  function cleanupInterference() {
+    // 移除可能的外部固定元素
+    const fixedElements = document.querySelectorAll('*[style*="position: fixed"]');
+    fixedElements.forEach(el => {
+      if (!el.classList.contains('fixed-element')) {
+        el.style.pointerEvents = 'none';
+      }
+    });
+
+    // 確保主要內容可以滾動
+    document.body.style.overflow = 'auto';
+    document.body.style.pointerEvents = 'auto';
+  }
+
+  // 優化滾動處理
+  function optimizeScroll() {
+    const viewport = document.querySelector('.l-viewport');
+    if (!viewport) return;
+
+    // 使用 requestAnimationFrame 優化滾動
+    let ticking = false;
+    viewport.addEventListener('scroll', function() {
+      if (!ticking) {
+        window.requestAnimationFrame(function() {
+          // 確保滾動正常
+          viewport.style.overflow = 'auto';
+          viewport.style.pointerEvents = 'auto';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // 初始化
+  window.addEventListener('load', function() {
+    initializeProtection();
+    optimizeScroll();
+    
+    // 定期清理干擾
+    setInterval(cleanupInterference, 1000);
+  });
+
+  // 監聽 DOM 變化，防止動態添加的元素干擾
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.addedNodes.length) {
+        cleanupInterference();
+      }
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
+
+<script>
+// 處理 fixed 元素的干擾
+(function() {
+  // 移除外部 fixed 元素的干擾
+  function removeFixedInterference() {
+    const fixedElements = document.querySelectorAll('*[style*="position: fixed"]');
+    fixedElements.forEach(el => {
+      if (!el.classList.contains('fixed-element')) {
+        el.style.pointerEvents = 'none';
+        el.style.opacity = '0.5';
+        el.style.zIndex = '-1';
+      }
+    });
+  }
+
+  // 確保我們的固定元素正常工作
+  function ensureFixedElements() {
+    const ourFixedElements = document.querySelectorAll('.fixed-element');
+    ourFixedElements.forEach(el => {
+      el.style.position = 'fixed';
+      el.style.pointerEvents = 'auto';
+      el.style.zIndex = '1000';
+    });
+  }
+
+  // 監聽 DOM 變化
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.addedNodes.length) {
+        removeFixedInterference();
+        ensureFixedElements();
+      }
+    });
+  });
+
+  // 初始化
+  window.addEventListener('load', function() {
+    removeFixedInterference();
+    ensureFixedElements();
+    
+    // 定期檢查
+    setInterval(function() {
+      removeFixedInterference();
+      ensureFixedElements();
+    }, 1000);
+
+    // 監聽整個文檔
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
+})();
+</script>
 </body>
 </html>
