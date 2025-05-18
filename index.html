@@ -137,8 +137,7 @@
   min-height: 100vh;
   padding: 50px 20px;
   background: #000;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible !important;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -171,11 +170,8 @@
 
 .about-content {
   flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible !important;
   padding-right: 10px;
-
-  overflow-y: visible !important;
 }
 
 .about.active .about-content {
@@ -233,6 +229,7 @@
 @media (max-width: 768px) {
   .about {
     padding: 30px 15px;
+    overflow: visible !important;
   }
   
   .about--banner {
@@ -241,13 +238,14 @@
   
   .about-content {
     padding-right: 5px;
+    overflow: visible !important;
+  }
   
-  overflow-y: visible !important;
-}
   .about-title {
     font-size: 2em;
     margin-bottom: 30px;
   }
+  
   .about-paragraph {
     font-size: 0.95em;
     line-height: 1.6;
@@ -469,13 +467,11 @@
                 function enableAboutScroll() {
                   const currentSection = document.querySelector('.section--is-active');
                   if (currentSection && currentSection.querySelector('.about')) {
-                    aboutSection.style.overflowY = 'auto';
-                    aboutContent.style.overflowY = 'auto';
-                    // document.body.style.overflow = 'hidden';
+                    aboutSection.style.overflow = 'visible';
+                    aboutContent.style.overflow = 'visible';
                   } else {
-                    aboutSection.style.overflowY = 'hidden';
-                    aboutContent.style.overflowY = 'hidden';
-                    document.body.style.overflow = 'auto';
+                    aboutSection.style.overflow = 'visible';
+                    aboutContent.style.overflow = 'visible';
                   }
                 }
 
