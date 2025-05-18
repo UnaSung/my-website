@@ -174,8 +174,6 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-right: 10px;
-  max-height: calc(100vh - 200px);
-  touch-action: pan-y;
 }
 
 .about.active .about-content {
@@ -322,7 +320,22 @@
     margin-top: 60px !important;
   }
 }
-  </style>
+  
+@media (max-width: 768px) {
+  .about-content {
+    max-height: 100vh;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+  .skills-section {
+    max-height: 100vh;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+}
+</style>
 
 <!-- notification for small viewports and landscape oriented smartphones -->
 <div class="device-notification">
@@ -450,9 +463,11 @@
                   if (currentSection && currentSection.querySelector('.about')) {
                     aboutSection.style.overflowY = 'auto';
                     aboutContent.style.overflowY = 'auto';
+                    // document.body.style.overflow = 'hidden';
                   } else {
                     aboutSection.style.overflowY = 'hidden';
                     aboutContent.style.overflowY = 'hidden';
+                    document.body.style.overflow = 'auto';
                   }
                 }
 
@@ -997,7 +1012,7 @@
                     const modal = document.getElementById(modalId);
                     if (modal) {
                       modal.style.display = 'block';
-                      document.body.style.overflow = 'hidden';
+                      // document.body.style.overflow = 'hidden';
                     }
                   }
                 });
@@ -1234,8 +1249,6 @@
                 padding-top: 80px;
                 overflow-y: auto;
                 position: relative;
-                max-height: 100vh;
-                touch-action: pan-y;
               }
 
               .skills-section h2 {
