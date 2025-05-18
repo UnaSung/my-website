@@ -1541,6 +1541,7 @@
             .info-item p {
               color: #fff;
               font-size: 1em;
+              word-break: break-word;
             }
 
             .email-button {
@@ -1569,10 +1570,69 @@
             @media (max-width: 768px) {
               .hire {
                 padding: 100px 20px 40px 20px;
+                min-height: auto;
+              }
+
+              .hire h2 {
+                font-size: 2em;
+                margin-bottom: 30px;
               }
 
               .contact-info {
                 grid-template-columns: 1fr;
+                gap: 20px;
+              }
+
+              .info-item {
+                padding: 20px;
+              }
+
+              .info-item i {
+                font-size: 28px;
+                margin-bottom: 10px;
+              }
+
+              .info-item h3 {
+                font-size: 1.1em;
+                margin-bottom: 8px;
+              }
+
+              .info-item p {
+                font-size: 0.95em;
+              }
+
+              .email-button {
+                padding: 12px 25px;
+                font-size: 1em;
+                width: 100%;
+                justify-content: center;
+              }
+            }
+
+            @media (max-width: 480px) {
+              .hire {
+                padding: 80px 15px 30px 15px;
+              }
+
+              .hire h2 {
+                font-size: 1.8em;
+                margin-bottom: 25px;
+              }
+
+              .info-item {
+                padding: 15px;
+              }
+
+              .info-item i {
+                font-size: 24px;
+              }
+
+              .info-item h3 {
+                font-size: 1em;
+              }
+
+              .info-item p {
+                font-size: 0.9em;
               }
             }
             </style>
