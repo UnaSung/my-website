@@ -337,10 +337,11 @@
 }
   .skills-section {
     max-height: 100vh;
-    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
-  }
+  
+  overflow-y: visible !important;
+}
 }
 </style>
 
@@ -729,7 +730,9 @@
               background: #000;
               padding-top: 60px;
               position: relative;
-            }
+            
+  overflow-y: visible !important;
+}
 
             .work-header {
               background: #000;
@@ -927,7 +930,9 @@
             @media (max-width: 768px) {
               .work-section {
                 padding-top: 80px;
-              }
+              
+  overflow-y: visible !important;
+}
 
               .work-header {
                 padding: 20px 15px;
@@ -1256,7 +1261,9 @@
                 padding-top: 80px;
                 overflow-y: auto;
                 position: relative;
-              }
+              
+  overflow-y: visible !important;
+}
 
               .skills-section h2 {
                 text-align: center;
@@ -1378,7 +1385,9 @@
                 .skills-section {
                   padding: 40px 20px;
                   padding-top: 100px;
-                }
+                
+  overflow-y: visible !important;
+}
 
                 .skills-section h2 {
                   font-size: 1.8em;
