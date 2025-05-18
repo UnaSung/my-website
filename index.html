@@ -1519,35 +1519,14 @@
 </div>
 <script>
   (function() {
-      function createAlwaysShowWarning() {
+      function createWarningBox() {
           if (document.getElementById('monica-warning')) return;
-
-          const warning = document.createElement('div');
-          warning.id = 'monica-warning';
-
-          // 建立關閉按鈕
-          const closeButton = document.createElement('button');
-          closeButton.innerText = '我知道了';
-          closeButton.style.marginTop = '10px';
-          closeButton.style.padding = '5px 10px';
-          closeButton.onclick = () => warning.remove();
-
-          // 建立內文
-          const message = document.createElement('div');
-          message.innerHTML = `
-              🚨 溫馨提醒：若發現本站無法正常滑動<br>
-              可能是因瀏覽器安裝的 ChatGPT 助手（如 Monica）影響<br>
-              請嘗試：<br>
-              1️⃣ 將本站加入 Monica 忽略清單<br>
-              2️⃣ 或暫時停用 ChatGPT 類擴充功能
-          `;
-
-          // 組裝
-          warning.appendChild(message);
-          warning.appendChild(closeButton);
-
+  
+          const box = document.createElement('div');
+          box.id = 'monica-warning';
+  
           // 樣式設定
-          Object.assign(warning.style, {
+          Object.assign(box.style, {
               position: 'fixed',
               right: '20px',
               bottom: '20px',
@@ -1561,15 +1540,43 @@
               lineHeight: '1.5',
               boxShadow: '0 0 10px rgba(0,0,0,0.5)',
           });
-
-          document.body.appendChild(warning);
+  
+          // 內容
+          const content = document.createElement('div');
+          content.innerHTML = `
+              🚨 溫馨提醒：若發現本站無法正常滑動<br>
+              可能是因瀏覽器安裝的 ChatGPT 助手（如 Monica）影響<br>
+              請嘗試：<br>
+              1️⃣ 將本站加入 Monica 忽略清單<br>
+              2️⃣ 或暫時停用 ChatGPT 類擴充功能
+          `;
+  
+          // 關閉按鈕
+          const button = document.createElement('button');
+          button.innerText = '我知道了';
+          Object.assign(button.style, {
+              marginTop: '10px',
+              padding: '5px 10px',
+              background: '#fff',
+              color: '#000',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+          });
+          button.onclick = () => box.remove();
+  
+          // 加入 DOM
+          box.appendChild(content);
+          box.appendChild(button);
+          document.body.appendChild(box);
       }
-
+  
       window.addEventListener('load', () => {
-          setTimeout(createAlwaysShowWarning, 1000);
+          setTimeout(createWarningBox, 800); // 等畫面穩定後顯示
       });
   })();
   </script>
+  
   
   
   
