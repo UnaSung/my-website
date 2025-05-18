@@ -1521,16 +1521,32 @@
   (function() {
       function createAlwaysShowWarning() {
           if (document.getElementById('monica-warning')) return;
+
           const warning = document.createElement('div');
           warning.id = 'monica-warning';
-          warning.innerHTML = `
+
+          // 建立關閉按鈕
+          const closeButton = document.createElement('button');
+          closeButton.innerText = '我知道了';
+          closeButton.style.marginTop = '10px';
+          closeButton.style.padding = '5px 10px';
+          closeButton.onclick = () => warning.remove();
+
+          // 建立內文
+          const message = document.createElement('div');
+          message.innerHTML = `
               🚨 溫馨提醒：若發現本站無法正常滑動<br>
-              可能是因瀏覽器安裝的 ChatGPT 助手 (如 Monica) 影響<br>
+              可能是因瀏覽器安裝的 ChatGPT 助手（如 Monica）影響<br>
               請嘗試：<br>
               1️⃣ 將本站加入 Monica 忽略清單<br>
-              2️⃣ 或暫時停用 ChatGPT 助手類擴充<br>
-              <button id="monica-close" style="margin-top:10px;padding:5px 10px;">我知道了</button>
+              2️⃣ 或暫時停用 ChatGPT 類擴充功能
           `;
+
+          // 組裝
+          warning.appendChild(message);
+          warning.appendChild(closeButton);
+
+          // 樣式設定
           Object.assign(warning.style, {
               position: 'fixed',
               right: '20px',
@@ -1545,10 +1561,10 @@
               lineHeight: '1.5',
               boxShadow: '0 0 10px rgba(0,0,0,0.5)',
           });
+
           document.body.appendChild(warning);
-          document.getElementById('monica-close').onclick = () => warning.remove();
       }
-  
+
       window.addEventListener('load', () => {
           setTimeout(createAlwaysShowWarning, 1000);
       });
