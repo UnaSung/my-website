@@ -174,6 +174,8 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-right: 10px;
+  max-height: calc(100vh - 200px);
+  touch-action: pan-y;
 }
 
 .about.active .about-content {
@@ -448,11 +450,9 @@
                   if (currentSection && currentSection.querySelector('.about')) {
                     aboutSection.style.overflowY = 'auto';
                     aboutContent.style.overflowY = 'auto';
-                    document.body.style.overflow = 'hidden';
                   } else {
                     aboutSection.style.overflowY = 'hidden';
                     aboutContent.style.overflowY = 'hidden';
-                    document.body.style.overflow = 'auto';
                   }
                 }
 
@@ -1234,6 +1234,8 @@
                 padding-top: 80px;
                 overflow-y: auto;
                 position: relative;
+                max-height: 100vh;
+                touch-action: pan-y;
               }
 
               .skills-section h2 {
