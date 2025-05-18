@@ -1522,33 +1522,68 @@
       let scrollCheckInterval;
       let lastScrollTop = 0;
       let scrollAttempts = 0;
-      const MAX_SCROLL_ATTEMPTS = 3; // 連續3次無法滾動才顯示警告
+      const MAX_SCROLL_ATTEMPTS = 5; // 增加檢測次數
+      let isUserScrolling = false; // 追蹤用戶是否正在滾動
 
       // 檢測滾動是否正常
       function checkScrollFunctionality() {
           const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
           const scrollDelta = Math.abs(currentScrollTop - lastScrollTop);
           
-          // 如果滾動位置沒有變化，可能是被阻擋
+          // 如果用戶正在滾動，重置計數器
+          if (isUserScrolling) {
+              scrollAttempts = 0;
+              isUserScrolling = false;
+              lastScrollTop = currentScrollTop;
+              return;
+          }
+
+          // 檢查是否真的無法滾動
           if (scrollDelta < 5 && currentScrollTop > 0) {
-              scrollAttempts++;
-              
-              // 嘗試強制修復
-              document.body.style.overflow = 'auto';
-              document.body.style.pointerEvents = 'auto';
-              
-              // 如果多次嘗試後仍然無法滾動，顯示警告
-              if (scrollAttempts >= MAX_SCROLL_ATTEMPTS) {
-                  createWarningBox();
-                  clearInterval(scrollCheckInterval);
-              }
+              // 嘗試手動滾動來驗證
+              window.scrollBy(0, 10);
+              setTimeout(() => {
+                  const newScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                  if (Math.abs(newScrollTop - currentScrollTop) < 5) {
+                      scrollAttempts++;
+                      
+                      // 嘗試強制修復
+                      document.body.style.overflow = 'auto';
+                      document.body.style.pointerEvents = 'auto';
+                      
+                      // 如果多次嘗試後仍然無法滾動，顯示警告
+                      if (scrollAttempts >= MAX_SCROLL_ATTEMPTS) {
+                          createWarningBox();
+                          clearInterval(scrollCheckInterval);
+                      }
+                  } else {
+                      scrollAttempts = 0;
+                  }
+              }, 100);
           } else {
-              // 如果滾動正常，重置計數器
               scrollAttempts = 0;
           }
           
           lastScrollTop = currentScrollTop;
       }
+
+      // 監聽用戶滾動事件
+      window.addEventListener('scroll', function() {
+          isUserScrolling = true;
+          scrollAttempts = 0; // 重置計數器
+      }, { passive: true });
+
+      // 監聽用戶滾輪事件
+      window.addEventListener('wheel', function() {
+          isUserScrolling = true;
+          scrollAttempts = 0; // 重置計數器
+      }, { passive: true });
+
+      // 監聽用戶觸控事件
+      window.addEventListener('touchmove', function() {
+          isUserScrolling = true;
+          scrollAttempts = 0; // 重置計數器
+      }, { passive: true });
 
       function createWarningBox() {
           // 如果已經存在警告框，不重複創建
@@ -1685,8 +1720,8 @@
               clearInterval(scrollCheckInterval);
           }
           
-          // 每500ms檢查一次滾動狀態
-          scrollCheckInterval = setInterval(checkScrollFunctionality, 500);
+          // 每1000ms檢查一次滾動狀態（降低檢測頻率）
+          scrollCheckInterval = setInterval(checkScrollFunctionality, 1000);
       }
   
       // 定期檢查並修復可能的干擾
