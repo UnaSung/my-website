@@ -1539,11 +1539,11 @@
               padding: '15px',
               borderRadius: '8px',
               fontSize: '14px',
-              zIndex: 999999999, // 更高的層級
+              zIndex: 999999999,
               maxWidth: '300px',
               lineHeight: '1.5',
               boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-              pointerEvents: 'auto' // 🔥 最重要！
+              pointerEvents: 'auto'
           });
   
           const content = document.createElement('div');
@@ -1564,13 +1564,24 @@
               color: '#000',
               border: 'none',
               borderRadius: '4px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              pointerEvents: 'auto' // 確保按鈕可以點擊
           });
-          button.onclick = () => box.remove();
+
+          // 修改關閉按鈕的事件處理
+          button.addEventListener('click', function(e) {
+              e.stopPropagation(); // 阻止事件冒泡
+              box.remove();
+          });
   
           box.appendChild(content);
           box.appendChild(button);
           document.body.appendChild(box);
+
+          // 確保警告框可以被點擊
+          box.addEventListener('click', function(e) {
+              e.stopPropagation();
+          });
       }
   
       // 定期檢查並修復可能的干擾
@@ -1586,6 +1597,16 @@
                   el.style.pointerEvents = 'none';
               }
           });
+
+          // 確保警告框和按鈕可以點擊
+          const warningBox = document.getElementById('monica-warning');
+          if (warningBox) {
+              warningBox.style.pointerEvents = 'auto';
+              const button = warningBox.querySelector('button');
+              if (button) {
+                  button.style.pointerEvents = 'auto';
+              }
+          }
       }
   
       window.addEventListener('load', () => {
